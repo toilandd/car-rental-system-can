@@ -12,5 +12,6 @@ public class Rental {
 
     public double getTotalFee() {
         return car.calculateRentalFee(days);
+        //deneme1
     }
 }
