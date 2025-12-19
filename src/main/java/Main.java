@@ -10,6 +10,7 @@ public class Main {
 
         System.out.println("=== CAR RENTAL SYSTEM ===");
 
+        
         while (running) {
 
             System.out.println("\n1. Add car");
@@ -51,14 +52,14 @@ public class Main {
                     inventory.addCar(car);
                     break;
 
-                // ✅ REMOVE CAR
+                //REMOVE CAR
                 case 2:
                     System.out.print("Enter car id to remove: ");
                     int removeId = scanner.nextInt();
                     inventory.removeCar(removeId);
                     break;
 
-                // (şimdilik sadece yazı)
+               //carları göster
                 case 3:
                     inventory.displayAvailableCars();
                     break;
