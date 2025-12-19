@@ -5,6 +5,7 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
+        CarInventory inventory = new CarInventory();
         boolean running = true;
 
         System.out.println("=== CAR RENTAL SYSTEM ===");
@@ -20,27 +21,54 @@ public class Main {
             System.out.print("Select an option: ");
 
             int choice = scanner.nextInt();
+            scanner.nextLine(); // buffer temizleme
 
             switch (choice) {
 
+                // ✅ ADD CAR
                 case 1:
-                    System.out.println("Add car selected");
+                    System.out.print("Enter car id: ");
+                    int id = scanner.nextInt();
+                    scanner.nextLine();
+
+                    System.out.print("Enter brand: ");
+                    String brand = scanner.nextLine();
+
+                    System.out.print("Enter daily price: ");
+                    double price = scanner.nextDouble();
+                    scanner.nextLine();
+
+                    System.out.print("Car type (1 = Electric, 2 = Gas): ");
+                    int type = scanner.nextInt();
+
+                    Car car;
+                    if (type == 1) {
+                        car = new ElectricCar(id, brand, price);
+                    } else {
+                        car = new GasCar(id, brand, price);
+                    }
+
+                    inventory.addCar(car);
                     break;
 
+                // ✅ REMOVE CAR
                 case 2:
-                    System.out.println("Remove car selected");
+                    System.out.print("Enter car id to remove: ");
+                    int removeId = scanner.nextInt();
+                    inventory.removeCar(removeId);
                     break;
 
+                // (şimdilik sadece yazı)
                 case 3:
-                    System.out.println("Display available cars selected");
+                    inventory.displayAvailableCars();
                     break;
 
                 case 4:
-                    System.out.println("Rent car selected");
+                    System.out.println("Rent car selected (to be implemented)");
                     break;
 
                 case 5:
-                    System.out.println("Return car selected");
+                    System.out.println("Return car selected (to be implemented)");
                     break;
 
                 case 0:
@@ -49,7 +77,7 @@ public class Main {
                     break;
 
                 default:
-                    System.out.println("Invalid option. Try again.");
+                    System.out.println("Invalid option!");
             }
         }
 
