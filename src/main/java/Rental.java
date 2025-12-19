@@ -1,8 +1,8 @@
 public class Rental {
 
-    Customer customer;
-    Car car;
-    int days;
+    private Customer customer;
+    private Car car;
+    private int days;
 
     public Rental(Customer customer, Car car, int days) {
         this.customer = customer;
@@ -12,6 +12,17 @@ public class Rental {
 
     public double getTotalFee() {
         return car.calculateRentalFee(days);
-        //deneme1
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public Car getCar() {
+        return car;
+    }
+
+    public int getDays() {
+        return days;
     }
 }
