@@ -4,84 +4,120 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
         CarInventory inventory = new CarInventory();
-        boolean running = true;
+        String ADMIN_PASSWORD = "admin123";
 
-        System.out.println("=== CAR RENTAL SYSTEM ===");
+        while (true) {
 
-        
-        while (running) {
+            System.out.println("\n1- Admin");
+            System.out.println("2- Customer");
+            System.out.println("0- Exit");
+            System.out.print("Secim: ");
+            int role = sc.nextInt();
 
-            System.out.println("\n1. Add car");
-            System.out.println("2. Remove car");
-            System.out.println("3. Display available cars");
-            System.out.println("4. Rent a car");
-            System.out.println("5. Return a car");
-            System.out.println("0. Exit");
-            System.out.print("Select an option: ");
+            if (role == 0) break;
 
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // buffer temizleme
+            // ===== ADMIN =====
+            if (role == 1) {
+                sc.nextLine();
+                System.out.print("Admin sifre: ");
+                String pass = sc.nextLine();
 
-            switch (choice) {
+                if (!pass.equalsIgnoreCase(ADMIN_PASSWORD)) {
+                    System.out.println("Yanlis sifre!");
+                    continue;
+                }
 
-                // ✅ ADD CAR
-                case 1:
-                    System.out.print("Enter car id: ");
-                    int id = scanner.nextInt();
-                    scanner.nextLine();
+                System.out.println("1- Arac ekle");
+                System.out.println("2- Arac sil");
+                System.out.println("3- Tum araclar");
+                int sec = sc.nextInt();
 
-                    System.out.print("Enter brand: ");
-                    String brand = scanner.nextLine();
+                if (sec == 1) {
+                    System.out.print("ID: ");
+                    int id = sc.nextInt();
+                    sc.nextLine();
 
-                    System.out.print("Enter daily price: ");
-                    double price = scanner.nextDouble();
-                    scanner.nextLine();
+                    System.out.print("Model: ");
+                    String brand = sc.nextLine();
 
-                    System.out.print("Car type (1 = Electric, 2 = Gas): ");
-                    int type = scanner.nextInt();
+                    System.out.print("Gunluk ucret: ");
+                    double price = sc.nextDouble();
 
-                    Car car;
-                    if (type == 1) {
-                        car = new ElectricCar(id, brand, price);
-                    } else {
-                        car = new GasCar(id, brand, price);
-                    }
+                    System.out.print("Tip (1=Elektrik, 2=Benzin): ");
+                    int type = sc.nextInt();
+
+                    Car car = (type == 1)
+                            ? new ElectricCar(id, brand, price)
+                            : new GasCar(id, brand, price);
 
                     inventory.addCar(car);
-                    break;
+                    System.out.println("Arac eklendi.");
+                }
 
-                //REMOVE CAR
-                case 2:
-                    System.out.print("Enter car id to remove: ");
-                    int removeId = scanner.nextInt();
-                    inventory.removeCar(removeId);
-                    break;
+                else if (sec == 2) {
+                    System.out.print("Silinecek ID: ");
+                    inventory.removeCar(sc.nextInt());
+                    System.out.println("Arac silindi.");
+                }
 
-               //carları göster
-                case 3:
-                    inventory.displayAvailableCars();
-                    break;
+                else if (sec == 3) {
+                    inventory.displayAllCars();
+                }
+            }
 
-                case 4:
-                    System.out.println("Rent car selected (to be implemented)");
-                    break;
+            // ===== CUSTOMER =====
+            else if (role == 2) {
 
-                case 5:
-                    System.out.println("Return car selected (to be implemented)");
-                    break;
+                boolean customerMenu = true;
 
-                case 0:
-                    running = false;
-                    System.out.println("Exiting system...");
-                    break;
+                while (customerMenu) {
+                    System.out.println("\n1- Musait araclar");
+                    System.out.println("2- Arac kirala");
+                    System.out.println("3- Araci teslim et");
+                    System.out.println("0- Geri don");
+                    System.out.print("Secim: ");
+                    int sec = sc.nextInt();
 
-                default:
-                    System.out.println("Invalid option!");
+                    if (sec == 1) {
+                        inventory.displayAvailableCars();
+                    }
+
+                    else if (sec == 2) {
+                        inventory.displayAvailableCars();
+                        System.out.print("Arac ID: ");
+                        int id = sc.nextInt();
+
+                        System.out.print("Gun sayisi: ");
+                        int day = sc.nextInt();
+
+                        if (inventory.rentCar(id)) {
+                            Car car = inventory.getCarById(id);
+                            Rental r = new Rental(new Customer(1, "Guest"), car, day);
+                            System.out.println("Arac basariyla kiralandi.");
+                            System.out.println("Toplam ucret: " + r.getTotalFee() + " TL");
+                        } else {
+                            System.out.println("Arac musait degil.");
+                        }
+                    }
+
+                    else if (sec == 3) {
+                        System.out.print("Teslim ID: ");
+                        if (inventory.returnCar(sc.nextInt())) {
+                            System.out.println("Arac basariyla teslim edildi.");
+                        } else {
+                            System.out.println("Hatali islem.");
+                        }
+                    }
+
+                    else if (sec == 0) {
+                        customerMenu = false;
+                    }
+                }
             }
         }
 
-        scanner.close();
+        sc.close();
     }
 }
