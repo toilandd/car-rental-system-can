@@ -1,0 +1,5 @@
+id,brand,dailyPrice,type,available
+1,tesla,350.0,ELECTRIC,true
+2,mercedes c200,600.0,BENZIN,true
+3,audi a4 ,800.0,BENZIN,true
+4,byd auto,280.0,ELECTRIC,true
